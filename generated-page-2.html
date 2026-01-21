@@ -1,0 +1,685 @@
+<html lang="en" class="scroll-smooth"><head>
+    <script>
+        document.documentElement.classList.add('js-active');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vishal Parekh | DFW Commercial &amp; Residential Real Estate</title>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    
+    <!-- Fonts: Inter for that Vercel/Linear aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Inter"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#0a0a0a', // Darker, cleaner black
+                            dark: '#171717',
+                            gray: '#737373',  // Neutral gray
+                            light: '#FAFAFA', // Very subtle off-white
+                            white: '#FFFFFF',
+                            border: '#E5E5E5'
+                        }
+                    },
+                    letterSpacing: {
+                        tighter: '-0.04em',
+                        tight: '-0.02em',
+                        normal: '0em',
+                        wide: '0.02em',
+                    },
+                    animation: {
+                        'subtle-zoom': 'zoomIn 30s ease-out infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        zoomIn: {
+                            '0%': { transform: 'scale(1)' },
+                            '100%': { transform: 'scale(1.1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Reveal System */
+        .reveal-on-scroll {
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        html.js-active .reveal-on-scroll:not(.is-visible) {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stagger Classes */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* Page Logic */
+        .page-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .page-section.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Utilities */
+        .hover-underline {
+            position: relative;
+            display: inline-block;
+        }
+        .hover-underline::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: currentColor;
+            transform-origin: bottom right;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .hover-underline:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e5e5e5;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a3a3a3;
+        }
+    </style>
+</head>
+<body class="bg-brand-white text-brand-black font-sans antialiased selection:bg-brand-black selection:text-white">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 w-full z-[60] transition-all duration-500 text-white border-b border-transparent">
+        <div class="max-w-[1600px] mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <button onclick="navigateTo('home')" class="text-lg font-semibold tracking-tight hover:opacity-70 transition-opacity z-[70] focus:outline-none uppercase">
+                Vishal Parekh
+            </button>
+
+            <div class="hidden md:flex items-center gap-8 text-xs font-medium tracking-wide uppercase text-white/90">
+                <button onclick="navigateTo('about')" class="hover-underline hover:text-white transition-colors">
+                    About
+                </button>
+                <button onclick="navigateTo('listings')" class="hover-underline hover:text-white transition-colors">
+                    Portfolio
+                </button>
+                <button onclick="navigateTo('expertise')" class="hover-underline hover:text-white transition-colors">
+                    Expertise
+                </button>
+                <button onclick="navigateTo('contact')" class="bg-white/10 backdrop-blur-md border border-white/20 text-white px-5 py-2 rounded-full hover:bg-white hover:text-brand-black transition-all duration-300">
+                    Get in Touch
+                </button>
+            </div>
+
+            <!-- Mobile Menu Icon -->
+            <button class="md:hidden z-[70] text-white" onclick="toggleMobileMenu()" id="menu-btn">
+                <iconify-icon icon="solar:hamburger-menu-linear" width="24" stroke-width="1.5"></iconify-icon>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="fixed inset-0 bg-[#0a0a0a] z-[65] flex flex-col justify-center items-center opacity-0 pointer-events-none transition-all duration-500 md:hidden">
+            <nav class="flex flex-col gap-8 text-center">
+                <button onclick="navigateTo('home'); toggleMobileMenu()" class="text-3xl font-light tracking-tight text-white hover:text-white/60">Home</button>
+                <button onclick="navigateTo('about'); toggleMobileMenu()" class="text-3xl font-light tracking-tight text-white hover:text-white/60">About</button>
+                <button onclick="navigateTo('listings'); toggleMobileMenu()" class="text-3xl font-light tracking-tight text-white hover:text-white/60">Portfolio</button>
+                <button onclick="navigateTo('expertise'); toggleMobileMenu()" class="text-3xl font-light tracking-tight text-white hover:text-white/60">Expertise</button>
+                <button onclick="navigateTo('contact'); toggleMobileMenu()" class="text-3xl font-light tracking-tight text-white hover:text-white/60">Contact</button>
+            </nav>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="min-h-screen">
+        
+        <!-- PAGE 1: HOME -->
+        <section id="home" class="page-section active">
+            <!-- Hero -->
+            <div class="relative min-h-screen w-full overflow-hidden bg-brand-black flex items-center">
+                <div class="absolute inset-0">
+                    <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/80 z-10 pointer-events-none"></div>
+                    <!-- Dallas Skyline / Modern Building -->
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&amp;w=2600&amp;auto=format&amp;fit=crop" class="w-full h-full object-cover animate-subtle-zoom opacity-80" alt="DFW Commercial Real Estate">
+                </div>
+                
+                <div class="relative z-20 w-full max-w-[1600px] mx-auto px-6 md:px-12 pt-24 md:pt-0">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                        
+                        <!-- LEFT: TEXT CONTENT -->
+                        <div class="lg:col-span-7 flex flex-col justify-center">
+                            <div class="overflow-hidden">
+                                <h1 class="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tighter leading-[0.95] text-white">
+                                    <span class="block opacity-0" style="animation: fadeIn 1s ease-out forwards 0.2s">Vishal</span>
+                                    <span class="block opacity-0 text-white/60" style="animation: fadeIn 1s ease-out forwards 0.4s">Parekh.</span>
+                                </h1>
+                            </div>
+                            <div class="mt-8 max-w-lg overflow-hidden">
+                                <p class="text-base md:text-lg font-light tracking-wide text-white/80 opacity-0" style="animation: fadeIn 1s ease-out forwards 0.6s">
+                                    Strategic Commercial &amp; Residential Real Estate services across the Dallas-Fort Worth metroplex.
+                                </p>
+                            </div>
+                            <div class="mt-8 opacity-0" style="animation: fadeIn 1s ease-out forwards 0.8s">
+                                <button onclick="navigateTo('listings')" class="group flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-white/90 hover:text-white transition-colors">
+                                    <div class="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center group-hover:border-white transition-colors">
+                                        <iconify-icon icon="solar:arrow-down-linear" width="16" stroke-width="1.5"></iconify-icon>
+                                    </div>
+                                    View Properties
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- === NEW FORM OVERLAY (DELETE TO REVERT) === -->
+                        <div class="lg:col-span-5 relative mt-8 lg:mt-0 opacity-0 animate-float" style="animation: fadeIn 1s ease-out forwards 0.8s; animation-delay: 0.5s;">
+                            <div class="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl relative overflow-hidden group">
+                                <!-- Shine Effect -->
+                                <div class="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/5 to-transparent pointer-events-none"></div>
+                                
+                                <!-- Profile Image Placeholder -->
+                                <div class="relative z-10 flex flex-col items-center -mt-16 mb-6">
+                                    <div class="w-[140px] h-[140px] rounded-full p-1 bg-gradient-to-b from-white/20 to-transparent backdrop-blur-md">
+                                        <div class="w-full h-full rounded-full bg-brand-dark overflow-hidden border border-white/10 relative">
+                                            <!-- PLACEHOLDER IMAGE HERE -->
+                                            <img src="https://placehold.co/200x200/171717/ffffff?text=VP" alt="Vishal Parekh" class="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Form Content -->
+                                <div class="relative z-10 space-y-4">
+                                    <div class="text-center mb-6">
+                                        <h3 class="text-white text-lg font-medium tracking-tight">Let's Connect</h3>
+                                        <p class="text-white/50 text-xs">Schedule a consultation today.</p>
+                                    </div>
+
+                                    <div class="space-y-3">
+                                        <div class="relative group">
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-white/40 group-focus-within:text-white/80 transition-colors">
+                                                <iconify-icon icon="solar:user-linear" width="16"></iconify-icon>
+                                            </div>
+                                            <input type="text" class="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-4 text-sm text-white placeholder-white/30 focus:outline-none focus:bg-white/10 focus:border-white/30 transition-all" placeholder="Your Name">
+                                        </div>
+                                        
+                                        <div class="relative group">
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-white/40 group-focus-within:text-white/80 transition-colors">
+                                                <iconify-icon icon="solar:letter-linear" width="16"></iconify-icon>
+                                            </div>
+                                            <input type="email" class="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-4 text-sm text-white placeholder-white/30 focus:outline-none focus:bg-white/10 focus:border-white/30 transition-all" placeholder="Email Address">
+                                        </div>
+
+                                        <button class="w-full bg-white text-brand-black font-semibold text-sm py-3 rounded-lg hover:bg-white/90 transition-colors flex items-center justify-center gap-2 mt-2">
+                                            <span>Start Conversation</span>
+                                            <iconify-icon icon="solar:arrow-right-linear" width="16"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="pt-4 border-t border-white/5 flex justify-center gap-6 text-white/40">
+                                        <a href="#" class="hover:text-white transition-colors"><iconify-icon icon="solar:phone-linear" width="18"></iconify-icon></a>
+                                        <a href="#" class="hover:text-white transition-colors"><iconify-icon icon="solar:brand-linkedin-linear" width="18"></iconify-icon></a>
+                                        <a href="#" class="hover:text-white transition-colors"><iconify-icon icon="solar:map-point-linear" width="18"></iconify-icon></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- === END FORM OVERLAY === -->
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Intro / Value Prop -->
+            <div class="bg-brand-white py-24 md:py-32">
+                <div class="max-w-[1600px] mx-auto px-6 md:px-12 reveal-on-scroll">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                        <div class="lg:col-span-7">
+                            <h2 class="text-3xl md:text-5xl lg:text-6xl font-medium tracking-tighter leading-[1.05] text-brand-black mb-8">
+                                Bridging the gap between <br>
+                                <span class="text-brand-gray">commercial ambition</span> and <br>
+                                residential comfort.
+                            </h2>
+                        </div>
+                        <div class="lg:col-span-5 lg:pt-2">
+                            <p class="text-base md:text-lg text-brand-gray font-light leading-relaxed mb-8">
+                                Whether you are scaling your business infrastructure or seeking the perfect home in DFW, I provide a dual-specialized approach. My practice is built on market analytics, negotiation precision, and an understanding of both asset classes.
+                            </p>
+                            <div class="flex gap-6 text-xs font-semibold uppercase tracking-wider text-brand-black">
+                                <span class="flex items-center gap-2">
+                                    <iconify-icon icon="solar:city-linear" width="16" stroke-width="1.5"></iconify-icon>
+                                    Commercial
+                                </span>
+                                <span class="flex items-center gap-2">
+                                    <iconify-icon icon="solar:home-smile-linear" width="16" stroke-width="1.5"></iconify-icon>
+                                    Residential
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Commercial Listing -->
+            <div class="max-w-[1600px] mx-auto px-6 md:px-12 pb-24 md:pb-32">
+                <div class="flex justify-between items-end mb-8 border-b border-brand-border pb-4 reveal-on-scroll">
+                    <h3 class="text-xl font-medium tracking-tight">Featured Investment</h3>
+                    <span class="text-xs font-mono text-brand-gray">PLANO, TX</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-12 group cursor-pointer" onclick="navigateTo('listings')">
+                    <div class="bg-brand-light aspect-[16/10] overflow-hidden rounded-sm reveal-on-scroll">
+                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&amp;w=1600&amp;auto=format&amp;fit=crop" alt="Commercial Office Space" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    </div>
+                    <div class="flex flex-col justify-center reveal-on-scroll delay-100">
+                        <div class="mb-6">
+                            <span class="inline-block px-3 py-1 bg-brand-black text-brand-white text-[10px] uppercase font-bold tracking-widest rounded-full mb-4">Class A Office</span>
+                            <h2 class="text-4xl md:text-5xl font-medium tracking-tighter mb-4 group-hover:text-brand-gray transition-colors">Legacy West Corridor</h2>
+                            <p class="text-brand-gray font-light leading-relaxed max-w-md">
+                                A premier commercial opportunity in the heart of Plano's business district. Ideal for corporate headquarters or mixed-use development.
+                            </p>
+                        </div>
+                        <ul class="grid grid-cols-2 gap-y-4 gap-x-8 text-sm font-medium border-l border-brand-border pl-6 text-brand-black/80">
+                            <li>24,000 Sq Ft</li>
+                            <li>Built 2019</li>
+                            <li>High Visibility</li>
+                            <li>95% Occupancy</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expertise Grid -->
+            <div class="bg-[#F5F5F7] py-24 md:py-32 border-y border-brand-border">
+                <div class="max-w-[1600px] mx-auto px-6 md:px-12">
+                    <div class="mb-16 reveal-on-scroll">
+                        <h2 class="text-3xl font-medium tracking-tight">Market Expertise</h2>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                        <!-- Item 1 -->
+                        <div class="reveal-on-scroll group">
+                            <div class="mb-6 w-12 h-12 bg-white rounded-full flex items-center justify-center border border-black/5 shadow-sm group-hover:scale-110 transition-transform duration-300">
+                                <iconify-icon icon="solar:graph-up-linear" width="24" stroke-width="1.5"></iconify-icon>
+                            </div>
+                            <h3 class="text-lg font-medium mb-3">Investment Analysis</h3>
+                            <p class="text-sm text-brand-gray leading-relaxed">
+                                Detailed cap rate calculations and ROI projections for commercial investors across the DFW region.
+                            </p>
+                        </div>
+                        <!-- Item 2 -->
+                        <div class="reveal-on-scroll delay-100 group">
+                            <div class="mb-6 w-12 h-12 bg-white rounded-full flex items-center justify-center border border-black/5 shadow-sm group-hover:scale-110 transition-transform duration-300">
+                                <iconify-icon icon="solar:shop-2-linear" width="24" stroke-width="1.5"></iconify-icon>
+                            </div>
+                            <h3 class="text-lg font-medium mb-3">Retail &amp; Industrial</h3>
+                            <p class="text-sm text-brand-gray leading-relaxed">
+                                Specialized knowledge in lease negotiation and acquisition for retail storefronts and industrial warehousing.
+                            </p>
+                        </div>
+                        <!-- Item 3 -->
+                        <div class="reveal-on-scroll delay-200 group">
+                            <div class="mb-6 w-12 h-12 bg-white rounded-full flex items-center justify-center border border-black/5 shadow-sm group-hover:scale-110 transition-transform duration-300">
+                                <iconify-icon icon="solar:key-linear" width="24" stroke-width="1.5"></iconify-icon>
+                            </div>
+                            <h3 class="text-lg font-medium mb-3">Residential Transition</h3>
+                            <p class="text-sm text-brand-gray leading-relaxed">
+                                Seamlessly guiding business owners through residential acquisitions, luxury leasing, and relocations.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 2: ABOUT -->
+        <section id="about" class="page-section">
+            <div class="pt-32 pb-20 px-6 md:px-12 max-w-[1600px] mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
+                    <div class="lg:col-span-5 reveal-on-scroll">
+                        <div class="aspect-[4/5] bg-brand-border rounded-sm overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&amp;w=1600&amp;auto=format&amp;fit=crop" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" alt="Vishal Parekh Portrait">
+                        </div>
+                    </div>
+                    <div class="lg:col-span-7 reveal-on-scroll delay-100">
+                        <h1 class="text-5xl md:text-7xl font-semibold tracking-tighter mb-8 text-brand-black">
+                            Vishal Parekh
+                        </h1>
+                        <h2 class="text-xl md:text-2xl text-brand-gray font-light mb-12">
+                            Serving the DFW Metroplex
+                        </h2>
+                        <div class="space-y-6 text-base md:text-lg font-light text-brand-black/80 leading-relaxed">
+                            <p>
+                                Real estate is more than transactions; it's about accurate data and strategic foresight. Based in the heart of Dallas-Fort Worth, I specialize in the acquisition and disposition of commercial assets, while maintaining a robust portfolio of residential services.
+                            </p>
+                            <p>
+                                Whether you are a business owner looking for a new headquarters, an investor seeking cap-rate opportunities, or a family looking for a home in Frisco, Plano, or Dallas, I bring a unified, professional approach to every deal.
+                            </p>
+                        </div>
+                        <div class="mt-12 flex gap-8 border-t border-brand-border pt-8">
+                            <div>
+                                <span class="block text-3xl font-semibold tracking-tight">10+</span>
+                                <span class="text-xs uppercase tracking-wider text-brand-gray">Years Experience</span>
+                            </div>
+                            <div>
+                                <span class="block text-3xl font-semibold tracking-tight">DFW</span>
+                                <span class="text-xs uppercase tracking-wider text-brand-gray">Primary Focus</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 3: LISTINGS (PORTFOLIO) -->
+        <section id="listings" class="page-section">
+            <div class="pt-32 px-6 md:px-12 max-w-[1600px] mx-auto">
+                <div class="mb-16 border-b border-brand-border pb-8 reveal-on-scroll">
+                    <h1 class="text-5xl md:text-6xl font-semibold tracking-tighter mb-4">Current Portfolio</h1>
+                    <div class="flex flex-col md:flex-row gap-4 md:items-center justify-between">
+                        <p class="text-brand-gray">A curated selection of commercial and residential opportunities.</p>
+                        <div class="flex gap-2">
+                            <button class="px-4 py-2 rounded-full border border-brand-black bg-brand-black text-white text-xs font-medium">All</button>
+                            <button class="px-4 py-2 rounded-full border border-brand-border text-brand-gray hover:border-brand-black text-xs font-medium transition-colors">Commercial</button>
+                            <button class="px-4 py-2 rounded-full border border-brand-border text-brand-gray hover:border-brand-black text-xs font-medium transition-colors">Residential</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 pb-32">
+                    <!-- Listing 1 (Commercial) -->
+                    <div class="group cursor-pointer reveal-on-scroll" onclick="navigateTo('contact')">
+                        <div class="aspect-[4/3] bg-brand-light overflow-hidden rounded-sm mb-4 relative">
+                            <div class="absolute top-3 left-3 bg-white/90 backdrop-blur text-[10px] font-bold uppercase tracking-wider px-3 py-1 z-10 rounded-full">For Lease</div>
+                            <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?q=80&amp;w=1600&amp;auto=format&amp;fit=crop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Office Space">
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-start mb-1">
+                                <h3 class="text-lg font-semibold tracking-tight">Tech Corridor Flex Space</h3>
+                                <span class="text-sm font-medium">$22/sqft</span>
+                            </div>
+                            <p class="text-sm text-brand-gray mb-2">Richardson, TX • Commercial</p>
+                            <div class="flex gap-4 text-xs font-medium text-brand-black/60">
+                                <span>5,000 SF</span>
+                                <span>Turnkey</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Listing 2 (Residential) -->
+                    <div class="group cursor-pointer reveal-on-scroll delay-100" onclick="navigateTo('contact')">
+                        <div class="aspect-[4/3] bg-brand-light overflow-hidden rounded-sm mb-4 relative">
+                            <div class="absolute top-3 left-3 bg-brand-black text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 z-10 rounded-full">For Sale</div>
+                            <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/917d6f93-fb36-439a-8c48-884b67b35381_1600w.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Luxury Home">
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-start mb-1">
+                                <h3 class="text-lg font-semibold tracking-tight">Lakeside Estate</h3>
+                                <span class="text-sm font-medium">$1,450,000</span>
+                            </div>
+                            <p class="text-sm text-brand-gray mb-2">Frisco, TX • Residential</p>
+                            <div class="flex gap-4 text-xs font-medium text-brand-black/60">
+                                <span>4 Bed</span>
+                                <span>3.5 Bath</span>
+                                <span>4,200 SF</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Listing 3 (Industrial) -->
+                    <div class="group cursor-pointer reveal-on-scroll delay-200" onclick="navigateTo('contact')">
+                        <div class="aspect-[4/3] bg-brand-light overflow-hidden rounded-sm mb-4 relative">
+                            <div class="absolute top-3 left-3 bg-white/90 backdrop-blur text-[10px] font-bold uppercase tracking-wider px-3 py-1 z-10 rounded-full">Investment</div>
+                            <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&amp;w=1600&amp;auto=format&amp;fit=crop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Warehouse">
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-start mb-1">
+                                <h3 class="text-lg font-semibold tracking-tight">DFW Logistics Hub</h3>
+                                <span class="text-sm font-medium">$3,200,000</span>
+                            </div>
+                            <p class="text-sm text-brand-gray mb-2">Grand Prairie, TX • Industrial</p>
+                            <div class="flex gap-4 text-xs font-medium text-brand-black/60">
+                                <span>20,000 SF</span>
+                                <span>3 Loading Docks</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 4: EXPERTISE/COMPASS REPLACEMENT -->
+        <section id="expertise" class="page-section">
+            <div class="pt-32 pb-20 px-6 md:px-12 max-w-[1600px] mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-center">
+                    <div class="order-2 lg:order-1 reveal-on-scroll">
+                        <h2 class="text-4xl md:text-5xl font-semibold tracking-tighter mb-8 leading-[1.1]">
+                            Comprehensive <br>
+                            Real Estate Strategy.
+                        </h2>
+                        <div class="space-y-8">
+                            <div class="flex gap-5">
+                                <div class="mt-1 shrink-0 text-brand-black">
+                                    <iconify-icon icon="solar:buildings-2-linear" width="24" stroke-width="1.5"></iconify-icon>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-medium mb-2">Commercial Sales &amp; Leasing</h4>
+                                    <p class="text-brand-gray font-light text-sm leading-relaxed">Representing buyers, sellers, landlords, and tenants in office, retail, and industrial transactions throughout DFW.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-5">
+                                <div class="mt-1 shrink-0 text-brand-black">
+                                    <iconify-icon icon="solar:armchair-2-linear" width="24" stroke-width="1.5"></iconify-icon>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-medium mb-2">Residential Brokerage</h4>
+                                    <p class="text-brand-gray font-light text-sm leading-relaxed">Providing high-touch service for residential clients, utilizing professional marketing and local market insights.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-5">
+                                <div class="mt-1 shrink-0 text-brand-black">
+                                    <iconify-icon icon="solar:chart-square-linear" width="24" stroke-width="1.5"></iconify-icon>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-medium mb-2">Investment Advisory</h4>
+                                    <p class="text-brand-gray font-light text-sm leading-relaxed">Data-backed guidance for portfolio expansion and asset disposition to maximize capital gains.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-1 lg:order-2 bg-brand-light aspect-square rounded-sm overflow-hidden relative reveal-on-scroll delay-100">
+                         <img src="https://images.unsplash.com/photo-1460472178825-e5240623afd5?q=80&amp;w=1600&amp;auto=format&amp;fit=crop" class="w-full h-full object-cover mix-blend-multiply opacity-90" alt="Building Strategy">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 5: CONTACT -->
+        <section id="contact" class="page-section">
+            <div class="pt-32 pb-20 px-6 md:px-12 max-w-[1200px] mx-auto">
+                <div class="text-center mb-16 reveal-on-scroll">
+                    <h1 class="text-5xl md:text-6xl font-semibold tracking-tighter mb-4">Start the Conversation</h1>
+                    <p class="text-brand-gray text-lg font-light">Commercial inquiry or finding your next home? Let's talk.</p>
+                </div>
+
+                <div class="bg-brand-white border border-brand-border rounded-xl p-8 md:p-12 shadow-[0_2px_20px_rgba(0,0,0,0.04)] reveal-on-scroll delay-100">
+                    <form class="space-y-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="space-y-2">
+                                <label class="text-xs font-semibold uppercase tracking-widest text-brand-gray">Name</label>
+                                <input type="text" class="w-full bg-brand-light border border-brand-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-brand-black transition-colors" placeholder="Full Name">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-semibold uppercase tracking-widest text-brand-gray">Email</label>
+                                <input type="email" class="w-full bg-brand-light border border-brand-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-brand-black transition-colors" placeholder="email@address.com">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-semibold uppercase tracking-widest text-brand-gray">Interest</label>
+                            <div class="flex gap-4">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="type" class="accent-brand-black"> <span class="text-sm">Commercial</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="type" class="accent-brand-black"> <span class="text-sm">Residential</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-semibold uppercase tracking-widest text-brand-gray">Message</label>
+                            <textarea rows="4" class="w-full bg-brand-light border border-brand-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-brand-black transition-colors resize-none" placeholder="Tell me about your property needs..."></textarea>
+                        </div>
+                        <button type="button" class="w-full bg-brand-black text-white font-medium py-4 rounded-lg hover:bg-brand-dark transition-colors tracking-wide text-sm">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+
+                <div class="mt-16 text-center space-y-2 reveal-on-scroll">
+                    <p class="text-brand-black font-medium">Vishal Parekh</p>
+                    <a href="mailto:contact@vishalparekh.com" class="block text-brand-gray hover:text-brand-black transition-colors">contact@vishalparekh.com</a>
+                    <p class="text-brand-gray text-sm">Dallas-Fort Worth, Texas</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="border-t border-brand-border bg-white py-12 px-6 md:px-12">
+            <div class="max-w-[1600px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+                <span class="text-sm font-semibold tracking-tight">Vishal Parekh</span>
+                <div class="flex gap-6 text-brand-gray">
+                    <a href="#" class="hover:text-brand-black transition-colors"><iconify-icon icon="solar:link-circle-linear" width="20"></iconify-icon></a>
+                    <a href="#" class="hover:text-brand-black transition-colors"><iconify-icon icon="solar:letter-linear" width="20"></iconify-icon></a>
+                </div>
+                <span class="text-xs text-brand-gray">© 2024 Real Estate Services.</span>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        // --- ANIMATION OBSERVER ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        function initObserver() {
+            document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+        }
+
+        window.addEventListener('load', initObserver);
+
+        // --- NAVIGATION ---
+        function navigateTo(pageId) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Handle Navigation State
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const target = document.getElementById(pageId);
+            if (target) {
+                target.classList.add('active');
+                setTimeout(initObserver, 100); // Re-trigger animations
+            }
+
+            // Navbar Styling Logic
+            const nav = document.getElementById('navbar');
+            const menuBtn = document.getElementById('menu-btn');
+            
+            if (pageId === 'home') {
+                nav.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-brand-border', 'text-brand-black');
+                nav.classList.add('text-white', 'border-transparent');
+                if(menuBtn) menuBtn.classList.add('text-white');
+                if(menuBtn) menuBtn.classList.remove('text-brand-black');
+            } else {
+                nav.classList.add('bg-white/90', 'backdrop-blur-md', 'border-brand-border', 'text-brand-black');
+                nav.classList.remove('text-white', 'border-transparent');
+                if(menuBtn) menuBtn.classList.remove('text-white');
+                if(menuBtn) menuBtn.classList.add('text-brand-black');
+            }
+        }
+
+        // --- SCROLL EFFECT ---
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            const menuBtn = document.getElementById('menu-btn');
+            const homeSection = document.getElementById('home');
+
+            if (homeSection && homeSection.classList.contains('active')) {
+                if (window.scrollY > window.innerHeight - 80) {
+                    nav.classList.add('bg-white/90', 'backdrop-blur-md', 'border-brand-border', 'text-brand-black');
+                    nav.classList.remove('text-white', 'border-transparent');
+                    if(menuBtn) menuBtn.classList.remove('text-white');
+                    if(menuBtn) menuBtn.classList.add('text-brand-black');
+                } else {
+                    nav.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-brand-border', 'text-brand-black');
+                    nav.classList.add('text-white', 'border-transparent');
+                    if(menuBtn) menuBtn.classList.add('text-white');
+                    if(menuBtn) menuBtn.classList.remove('text-brand-black');
+                }
+            }
+        });
+
+        // --- MOBILE MENU ---
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('opacity-0')) {
+                menu.classList.remove('opacity-0', 'pointer-events-none');
+                document.body.style.overflow = 'hidden';
+            } else {
+                menu.classList.add('opacity-0', 'pointer-events-none');
+                document.body.style.overflow = '';
+            }
+        }
+    </script>
+
+</body></html>
