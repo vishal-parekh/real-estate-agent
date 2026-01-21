@@ -7,8 +7,32 @@ import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NODE_ENV === "production"
+      ? "https://vishalparekh.realtor"
+      : "http://localhost:3005"
+  ),
   title: "Vishal Parekh | DFW Commercial & Residential Real Estate",
   description: "Strategic Commercial & Residential Real Estate services across the Dallas-Fort Worth metroplex.",
+  icons: {
+    icon: '/favicon.png',
+  },
+  openGraph: {
+    title: "Vishal Parekh | DFW Commercial & Residential Real Estate",
+    description: "Strategic Commercial & Residential Real Estate services across the Dallas-Fort Worth metroplex.",
+    url: "https://vishalparekh.realtor",
+    siteName: "Vishal Parekh Real Estate",
+    images: [
+      {
+        url: "/ogImg.png",
+        width: 1200,
+        height: 630,
+        alt: "Vishal Parekh Real Estate",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

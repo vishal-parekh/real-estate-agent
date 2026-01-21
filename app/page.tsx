@@ -331,9 +331,8 @@ export default function Home() {
                     </div>
 
                     <div className="pt-6 border-t border-white/5 flex justify-center gap-8 text-white/40">
-                      <a href="#" className="hover:text-white transition-colors"><Iconify icon="solar:phone-linear" width="20"></Iconify></a>
+                      <a href="tel:9723229587" className="hover:text-white transition-colors"><Iconify icon="solar:phone-linear" width="20"></Iconify></a>
                       <a href="#" className="hover:text-white transition-colors"><Iconify icon="solar:brand-linkedin-linear" width="20"></Iconify></a>
-                      <a href="#" className="hover:text-white transition-colors"><Iconify icon="solar:map-point-linear" width="20"></Iconify></a>
                     </div>
                   </div>
                 </div>
@@ -560,13 +559,36 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t border-brand-border bg-white py-12 px-6 md:px-12">
-        <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <span className="text-sm font-semibold tracking-tight">Vishal Parekh</span>
-          <div className="flex gap-6 text-brand-gray">
-            <a href="#" className="hover:text-brand-black transition-colors"><Iconify icon="solar:link-circle-linear" width="20"></Iconify></a>
-            <a href="#" className="hover:text-brand-black transition-colors"><Iconify icon="solar:letter-linear" width="20"></Iconify></a>
+        <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row justify-between items-end gap-10">
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1.5 mb-1">
+              <a
+                href="https://drive.google.com/file/u/4/d/1yQaeWgbEwB3xk8wz-SaOJYk07XadHWMb/view?usp=share_link"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[9px] uppercase tracking-[0.15em] text-brand-gray/50 hover:text-brand-black transition-colors font-medium"
+              >
+                TREC Information About Brokerage Services
+              </a>
+              <a
+                href="https://www.trec.texas.gov/sites/default/files/pdf-forms/CN%201-5.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[9px] uppercase tracking-[0.15em] text-brand-gray/50 hover:text-brand-black transition-colors font-medium"
+              >
+                TREC Consumer Protection Notice
+              </a>
+            </div>
+            <span className="text-sm font-semibold tracking-tight uppercase">Vishal Parekh</span>
           </div>
-          <span className="text-xs text-brand-gray">© {new Date().getFullYear()}</span>
+
+          <div className="flex flex-col items-center md:items-end gap-4">
+            <div className="flex gap-6 text-brand-gray">
+              <a href="#" className="hover:text-brand-black transition-colors"><Iconify icon="solar:link-circle-linear" width="20"></Iconify></a>
+              <a href="#" className="hover:text-brand-black transition-colors"><Iconify icon="solar:letter-linear" width="20"></Iconify></a>
+            </div>
+            <span className="text-xs text-brand-gray/60 font-medium tracking-wide">© {new Date().getFullYear()}</span>
+          </div>
         </div>
       </footer>
     </main>
