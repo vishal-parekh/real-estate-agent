@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 
 // Wrapper for custom element to bypass TypeScript issues
@@ -16,20 +16,17 @@ export default function Home() {
 
   // Form State
   const [heroForm, setHeroForm] = useState({ name: "", email: "", propertyAddress: "" });
-  const [contactForm, setContactForm] = useState({ name: "", email: "", propertyAddress: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleFormSubmit = async (e: React.FormEvent, type: 'hero' | 'contact') => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    const formData = type === 'hero' ? heroForm : contactForm;
 
     try {
       const res = await fetch('/api/email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(heroForm),
       });
 
       const data = await res.json();
@@ -37,8 +34,7 @@ export default function Home() {
       if (!res.ok) throw new Error(data.error || 'Something went wrong');
 
       toast.success('Message sent successfully!');
-      if (type === 'hero') setHeroForm({ name: "", email: "", propertyAddress: "" });
-      else setContactForm({ name: "", email: "", propertyAddress: "" });
+      setHeroForm({ name: "", email: "", propertyAddress: "" });
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Failed to send message');
     } finally {
@@ -117,7 +113,6 @@ export default function Home() {
 
   // Logic for inner menu text color
   const innerMenuTextColor = navbarScrolled || activePage !== "home" ? "text-brand-black/90" : "text-white/90";
-  const innerMenuBtnClass = "hover-underline hover:opacity-75 transition-colors";
   const innerMenuCtaClass = navbarScrolled || activePage !== "home"
     ? "bg-brand-black text-white hover:bg-brand-gray border-brand-black"
     : "bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white hover:text-brand-black";
@@ -146,14 +141,11 @@ export default function Home() {
           </button>
 
           <div className={`hidden md:flex items-center gap-8 text-xs font-medium tracking-wide uppercase ${innerMenuTextColor}`}>
-            <button onClick={() => handleNavigation("about")} className={innerMenuBtnClass}>
-              About
-            </button>
             <button
-              onClick={() => handleNavigation("contact")}
+              onClick={() => handleNavigation("about")}
               className={`border px-5 py-2 rounded-full transition-all duration-300 ${innerMenuCtaClass}`}
             >
-              Get in Touch
+              About
             </button>
           </div>
 
@@ -192,12 +184,6 @@ export default function Home() {
             >
               About
             </button>
-            <button
-              onClick={() => { handleNavigation("contact"); closeMobileMenu(); }}
-              className="text-3xl font-light tracking-tight text-white hover:text-white/60"
-            >
-              Contact
-            </button>
           </nav>
         </div>
       </nav>
@@ -234,20 +220,9 @@ export default function Home() {
                     Strategic Commercial & Residential Real Estate services across the Dallas-Fort Worth metroplex.
                   </p>
                 </div>
-                <div className="mt-8 opacity-0" style={{ animation: "fadeIn 1s ease-out forwards 0.8s" }}>
-                  <button
-                    onClick={() => handleNavigation("contact")}
-                    className="group flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-white/90 hover:text-white transition-colors"
-                  >
-                    <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center group-hover:border-white transition-colors">
-                      <Iconify icon="solar:arrow-right-linear" width="16" stroke-width="1.5"></Iconify>
-                    </div>
-                    Start Your Search
-                  </button>
-                </div>
               </div>
 
-              {/* === NEW FORM OVERLAY === */}
+              {/* RIGHT: FLOATING FORM */}
               <div
                 className="lg:col-span-6 relative mt-8 lg:mt-0 opacity-0"
                 style={{
@@ -276,7 +251,7 @@ export default function Home() {
                     </div>
 
                     <div className="space-y-4">
-                      <form onSubmit={(e) => handleFormSubmit(e, 'hero')} className="space-y-4">
+                      <form onSubmit={handleFormSubmit} className="space-y-4">
                         <div className="relative group">
                           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-white/40 group-focus-within:text-white/80 transition-colors">
                             <Iconify icon="solar:user-linear" width="20"></Iconify>
@@ -494,73 +469,10 @@ export default function Home() {
 
 
 
-      {/* PAGE 5: CONTACT */}
-      <section id="contact" className={`page-section ${activePage === "contact" ? "active" : ""}`}>
-        <div className="pt-32 pb-20 px-6 md:px-12 max-w-[1200px] mx-auto">
-          <div className="text-center mb-16 reveal-on-scroll">
-            <h1 className="text-5xl md:text-6xl font-semibold tracking-tighter mb-4">Start the Conversation</h1>
-            <p className="text-brand-gray text-lg font-light">Commercial inquiry or finding your next home? Let's talk.</p>
-          </div>
-
-          <div className="bg-brand-white border border-brand-border rounded-xl p-8 md:p-12 shadow-[0_2px_20px_rgba(0,0,0,0.04)] reveal-on-scroll delay-100">
-            <form onSubmit={(e) => handleFormSubmit(e, 'contact')} className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-2">
-                  <label className="text-xs font-semibold uppercase tracking-widest text-brand-gray">Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={contactForm.name}
-                    onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
-                    className="w-full bg-brand-light border border-brand-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-brand-black transition-colors"
-                    placeholder="Full Name"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-semibold uppercase tracking-widest text-brand-gray">Email</label>
-                  <input
-                    type="email"
-                    required
-                    value={contactForm.email}
-                    onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
-                    className="w-full bg-brand-light border border-brand-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-brand-black transition-colors"
-                    placeholder="email@address.com"
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs font-semibold uppercase tracking-widest text-brand-gray">Property Address</label>
-                <input
-                  type="text"
-                  required
-                  value={contactForm.propertyAddress}
-                  onChange={(e) => setContactForm({ ...contactForm, propertyAddress: e.target.value })}
-                  className="w-full bg-brand-light border border-brand-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-brand-black transition-colors"
-                  placeholder="Street address or location of interest"
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-brand-black text-white font-medium py-4 rounded-lg hover:bg-brand-dark transition-colors tracking-wide text-sm disabled:opacity-70 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? 'Sending...' : 'Send Message'}
-              </button>
-            </form>
-          </div>
-
-          <div className="mt-16 text-center space-y-2 reveal-on-scroll">
-            <p className="text-brand-black font-medium">Vishal Parekh</p>
-            <a href="mailto:contact@vishalparekh.com" className="block text-brand-gray hover:text-brand-black transition-colors">contact@vishalparekh.com</a>
-            <p className="text-brand-gray text-sm">Dallas-Fort Worth, Texas</p>
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
       <footer className="border-t border-brand-border bg-white py-12 px-6 md:px-12">
-        <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row justify-between items-end gap-10">
-          <div className="flex flex-col gap-3">
+        <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row justify-between items-center md:items-end gap-10">
+          <div className="flex flex-col gap-3 items-center md:items-start text-center md:text-left">
             <div className="flex flex-col gap-1.5 mb-1">
               <a
                 href="https://drive.google.com/file/u/4/d/1yQaeWgbEwB3xk8wz-SaOJYk07XadHWMb/view?usp=share_link"
@@ -582,7 +494,7 @@ export default function Home() {
             <span className="text-sm font-semibold tracking-tight uppercase">Vishal Parekh</span>
           </div>
 
-          <div className="flex flex-col items-center md:items-end gap-4">
+          <div className="flex flex-col items-center gap-4">
             <div className="flex gap-6 text-brand-gray">
               <a href="#" className="hover:text-brand-black transition-colors"><Iconify icon="solar:link-circle-linear" width="20"></Iconify></a>
               <a href="#" className="hover:text-brand-black transition-colors"><Iconify icon="solar:letter-linear" width="20"></Iconify></a>
